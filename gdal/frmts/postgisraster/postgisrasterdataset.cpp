@@ -2840,6 +2840,8 @@ GetConnectionInfo(const char *pszFilename, char **ppszConnectionString,
             papszParams = CSLRemoveStrings(papszParams, nPos, 1, nullptr);
         }
     } else {
+        *bBrowseDatabase = false;
+
         *ppszTable =
             CPLStrdup(CPLParseNameValue(papszParams[nPos], nullptr));
         /* Delete this pair from params array */
@@ -2908,7 +2910,9 @@ GetConnectionInfo(const char *pszFilename, char **ppszConnectionString,
      * Set application name if not found in connection string
      **********************************************************/
 
-    if (CSLFindName(papszParams, "application_name") == -1 &&
+    if (*bBrowseDatabase == FALSE &&
+        *nMode == ONE_RASTER_PER_TABLE &&
+        CSLFindName(papszParams, "application_name") == -1 &&
         getenv("PGAPPNAME") == nullptr) {
         osConnectionString += "application_name=";
         osConnectionString += "'";

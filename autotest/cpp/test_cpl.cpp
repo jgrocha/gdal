@@ -479,7 +479,8 @@ namespace tut
             CPLErrorReset();
             char    *pszDecodedString = CPLRecode( oTestString.szString,
                 oTestString.szEncoding, oReferenceString.szEncoding);
-            if( strstr(CPLGetLastErrorMsg(), "Recode from KOI8-R to UTF-8 not supported") != nullptr )
+            if( strstr(CPLGetLastErrorMsg(), "Recode from CP1251 to UTF-8 not supported") != nullptr ||
+                strstr(CPLGetLastErrorMsg(), "Recode from KOI8-R to UTF-8 not supported") != nullptr )
             {
                 CPLFree( pszDecodedString );
                 break;
@@ -2587,7 +2588,7 @@ namespace tut
             AutoCloseTest() {
                 counter += 222;
             }
-            virtual ~AutoCloseTest() { 
+            virtual ~AutoCloseTest() {
                 counter -= 22;
             }
             static AutoCloseTest* Create() {
@@ -2895,7 +2896,7 @@ namespace tut
     template<>
     void object::test<41>()
     {
-#ifdef HAVE_CURL        
+#ifdef HAVE_CURL
         CPLStringList oOptions;
         oOptions.AddNameVlue("FORM_ITEM_COUNT", "5");
         oOptions.AddNameVlue("FORM_KEY_0", "qqq");
@@ -2911,8 +2912,8 @@ namespace tut
         ensure_equals(pResult->nStatus, 34);
         CPLHTTPDestroyResult(pResult);
 
-#endif // HAVE_CURL        
-    }    
+#endif // HAVE_CURL
+    }
 
     // Test CPLHTTPPushFetchCallback
     template<>
